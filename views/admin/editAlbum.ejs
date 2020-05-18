@@ -1,0 +1,85 @@
+<div id="content-wrapper">
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/admin/tables">Albums Management</a>
+            </li>
+            <li class="breadcrumb-item active">Edit Album</li>
+        </ol>
+        <!-- Page Content -->
+        <h1>Edit Album</h1>
+
+        <div class="card mx-auto mt-5">
+            <div class="card-header">
+                <i class="fas fa-play-circle"></i>
+                Album Details - <%= albumInfo.Name %>
+            </div>
+            <div class="card-body">
+                <div class="card-body text-center">
+                    <img src="/store/cover/<%= albumInfo.CoverImageFile %>" style="width: 200px"/>
+                </div>
+
+                <form action="/admin/edit-album" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="albumId" value="<%=albumInfo.AlbumId%>">
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <input type="text" id="albumName" class="form-control" name="name" placeholder="Name" required autofocus="autofocus" value="<%=albumInfo.Name%>">
+                            <label for="albumName">Name</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <input type="text" id="albumDescr" class="form-control" name="description" placeholder="Description" value="<%=albumInfo.Description%>">
+                            <label for="albumDescr">Description</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <input type="text" id="albumArtist" class="form-control" name="artist" placeholder="Artist" value="<%=albumInfo.Artist%>">
+                            <label for="albumArtist">Artist</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <input type="number" id="albumQuantity" class="form-control" name="quantity" placeholder="Quantity" value="<%=albumInfo.Quantity%>">
+                            <label for="albumQuantity">Quantity</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <input type="number" id="albumPriceOverride" class="form-control" name="priceOverride" placeholder="PriceOverride" value="<%=albumInfo.PriceOverride%>">
+                            <label for="albumPriceOverride">$ Price Override</label>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Cover Image</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" accept=".jpg, .jpeg, .png" class="custom-file-input" name="coverImage" id="coverImage">
+                            <label class="custom-file-label" for="coverImage"><%=albumInfo.CoverImageFile%></label>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
+<script>
+    $(document).ready(function () {
+        $('#coverImage').on('change', function () {
+            //replace the "Choose a file" label
+            $(this).next('.custom-file-label').text($(this)[0].files[0].name);
+        });
+    });
+</script>

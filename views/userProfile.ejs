@@ -1,0 +1,52 @@
+<div id="page-wrapper">
+    <div class="inner-content">
+
+            <div class="user-profile">
+                <h1>User Profile</h1>
+
+                <table>
+                    <tr>
+                        <th>First name</th>
+                        <td><%- JSON.parse(userProfile).FirstName %></td>
+                    </tr>
+                    <tr>
+                        <th>Last name</th>
+                        <td><%- JSON.parse(userProfile).LastName %></td>
+                    </tr>
+                    <tr>
+                        <th>Birthday</th>
+                        <td><%- JSON.parse(userProfile).Birthday%></td>
+                    </tr>
+                    <tr>
+                        <th>Phone</th>
+                        <td><%- JSON.parse(userProfile).Phone %></td>
+                    </tr>
+                    <tr>
+                        <th>Credits</th>
+                        <td id="credits-value"><%- JSON.parse(userProfile).Credits %></td>
+                    </tr>
+
+                    <tr>
+                        <th>Loyalty Points</th>
+                        <td><%- JSON.parse(userProfile).LPoints %></td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div class="redeem-credits">
+                <h1>Redeem credits</h1>
+
+                <form class="form-inline">
+                    <label for="credits-code">Credit code</label>
+                    <input type="text" class="form-control" id="credits-code" name="credits-code"/>
+                    <input class="btn btn-primary" type="button" value="Submit" onclick="javascript: redeemCredits()"/>
+                </form>
+                <p id="redeemErrorMessage" style="color: Red;"></p>
+            </div>
+        </div>
+
+    <div class="clearfix"></div>
+    <!--body wrapper end-->
+    <!-- /w3l-agile-info -->
+</div>

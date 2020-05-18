@@ -1,0 +1,93 @@
+<div id="content-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/admin/">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Tables</li>
+        </ol>
+        <h1>Albums Management</h1>
+
+        <!-- DataTables Example -->
+        <div class="card mt-5">
+            <div class="card-header">
+                <i class="fas fa-table"></i>
+                All active albums
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Cover</th>
+                            <th>Album Id</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Artist</th>
+                            <th>Quantity</th>
+                            <th>Price Override</th>
+                            <th>Add Date</th>
+                            <th>Last Updated</th>
+                            <th>Edit Songs</th>
+                            <th>Edit Album</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                        <!--<tfoot>-->
+                        <!--<tr>-->
+                        <!--<th>Name</th>-->
+                        <!--<th>Position</th>-->
+                        <!--<th>Office</th>-->
+                        <!--<th>Age</th>-->
+                        <!--<th>Start date</th>-->
+                        <!--<th>Salary</th>-->
+                        <!--</tr>-->
+                        <!--</tfoot>-->
+                        <tbody>
+                        <% albumItems.forEach((val)=>{ %>
+                            <tr>
+                                <td><img src="/store/cover/<%- val.CoverImageFile %>" style="width: 80px"/></td>
+                                <td><%= val.AlbumId %></td>
+                                <td><%= val.Name %></td>
+                                <td><%= val.Description %></td>
+                                <td><%= val.Artist %></td>
+                                <td><%= val.Quantity %></td>
+                                <td><%= val.PriceOverride %></td>
+                                <td><%= val.AddDate %></td>
+                                <td><%= val.ModifyDate %></td>
+                                <td><a href="/admin/edit-songs-page?albumid=<%= val.AlbumId %>" class="btn btn-info">Edit</a></td>
+                                <td><a href="/admin/edit-album-page?albumid=<%= val.AlbumId %>" class="btn btn-warning">Edit</a></td>
+                                <td><button class="btn btn-danger" onclick="confirmDel(<%= val.AlbumId %>)">Delete</button></td>
+                            </tr>
+                        <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer small text-muted"></div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- /.content-wrapper -->
+<script>
+    function ajaxDelAlbum(albumId) {
+        $.ajax({
+            type: "DELETE",
+            url: '/admin/album?albumId=' + albumId,
+            success: function (data) {
+                window.location.reload();
+            }
+        });
+    }
+
+    function confirmDel(albumId) {
+        var choice = confirm('Are you sure?');
+        if (choice) {
+            ajaxDelAlbum(albumId);
+        }
+    }
+</script>

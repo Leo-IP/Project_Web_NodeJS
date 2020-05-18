@@ -1,0 +1,792 @@
+<script
+        src="https://code.jquery.com/jquery-2.2.4.js"
+        integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+        crossorigin="anonymous"></script>
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic|Montserrat:400,700);
+
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, embed,
+    figure, figcaption, footer, header, hgroup,
+    menu, nav, output, ruby, section, summary,
+    time, mark, audio, video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font: inherit;
+        font-size: 100%;
+        vertical-align: baseline;
+    }
+
+    html {
+        line-height: 1;
+    }
+
+    ol, ul {
+        list-style: none;
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    caption, th, td {
+        text-align: left;
+        font-weight: normal;
+        vertical-align: middle;
+    }
+
+    q, blockquote {
+        quotes: none;
+    }
+
+    q:before, q:after, blockquote:before, blockquote:after {
+        content: "";
+        content: none;
+    }
+
+    a img {
+        border: none;
+    }
+
+    article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+        display: block;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        color: #333;
+        -webkit-font-smoothing: antialiased;
+        font-family: "Droid Serif", serif;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    .cf:before, .cf:after {
+        content: " ";
+        display: table;
+    }
+
+    .cf:after {
+        clear: both;
+    }
+
+    .cf {
+        *zoom: 1;
+    }
+
+    .wrap {
+        width: 75%;
+        max-width: 960px;
+        margin: 0 auto;
+        /*padding: 5% 0;*/
+        margin-bottom: 5em;
+    }
+
+    .projTitle {
+        font-family: "Montserrat", sans-serif;
+        font-weight: bold;
+        text-align: center;
+        font-size: 2em;
+        padding: 1em 0;
+        border-bottom: 1px solid #dadada;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+    .projTitle span {
+        font-family: "Droid Serif", serif;
+        font-weight: normal;
+        font-style: italic;
+        text-transform: lowercase;
+        color: #777;
+    }
+
+    .heading {
+        padding: 1em 0;
+        border-bottom: 1px solid #D0D0D0;
+    }
+
+    .heading h1 {
+        font-family: "Droid Serif", serif;
+        font-size: 2em;
+        float: left;
+    }
+
+    .heading a.continue:link, .heading a.continue:visited {
+        text-decoration: none;
+        font-family: "Montserrat", sans-serif;
+        letter-spacing: -.015em;
+        font-size: .75em;
+        padding: 1em;
+        color: #fff;
+        background: #82ca9c;
+        font-weight: bold;
+        border-radius: 50px;
+        float: right;
+        text-align: right;
+        -webkit-transition: all 0.25s linear;
+        -moz-transition: all 0.25s linear;
+        -ms-transition: all 0.25s linear;
+        -o-transition: all 0.25s linear;
+        transition: all 0.25s linear;
+    }
+
+    .heading a.continue:after {
+        content: "\276f";
+        padding: .5em;
+        position: relative;
+        right: 0;
+        -webkit-transition: all 0.15s linear;
+        -moz-transition: all 0.15s linear;
+        -ms-transition: all 0.15s linear;
+        -o-transition: all 0.15s linear;
+        transition: all 0.15s linear;
+    }
+
+    .heading a.continue:hover, .heading a.continue:focus, .heading a.continue:active {
+        background: #f69679;
+    }
+
+    .heading a.continue:hover:after, .heading a.continue:focus:after, .heading a.continue:active:after {
+        right: -10px;
+    }
+
+    .tableHead {
+        display: table;
+        width: 100%;
+        font-family: "Montserrat", sans-serif;
+        font-size: .75em;
+    }
+
+    .tableHead li {
+        display: table-cell;
+        padding: 1em 0;
+        text-align: center;
+    }
+
+    .tableHead li.prodHeader {
+        text-align: left;
+    }
+
+    .cart {
+        padding: 1em 0;
+    }
+
+    .cart .items {
+        display: block;
+        width: 100%;
+        vertical-align: middle;
+        padding: 1.5em;
+        border-bottom: 1px solid #fafafa;
+    }
+
+    .cart .items.even {
+        background: #fafafa;
+    }
+
+    .cart .items .infoWrap {
+        display: table;
+        width: 100%;
+    }
+
+    .cart .items .cartSection {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .cart .items .cartSection .itemNumber {
+        font-size: .75em;
+        color: #777;
+        margin-bottom: .5em;
+    }
+
+    .cart .items .cartSection h3 {
+        font-size: 1em;
+        font-family: "Montserrat", sans-serif;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: .025em;
+    }
+
+    .cart .items .cartSection p {
+        display: inline-block;
+        font-size: .85em;
+        color: #777777;
+        font-family: "Montserrat", sans-serif;
+    }
+
+    .cart .items .cartSection p .quantity {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .cart .items .cartSection p.stockStatus {
+        color: #82CA9C;
+        font-weight: bold;
+        padding: .5em 0 0 1em;
+        text-transform: uppercase;
+    }
+
+    .cart .items .cartSection p.stockStatus.out {
+        color: #F69679;
+    }
+
+    .cart .items .cartSection .itemImg {
+        width: 4em;
+        float: left;
+    }
+
+    .cart .items .cartSection.qtyWrap, .cart .items .cartSection.prodTotal {
+        text-align: center;
+    }
+
+    .cart .items .cartSection.qtyWrap p, .cart .items .cartSection.prodTotal p {
+        font-weight: bold;
+        font-size: 1.25em;
+    }
+
+    .cart .items .cartSection input.qty {
+        width: 2em;
+        text-align: center;
+        font-size: 1em;
+        padding: .25em;
+        margin: 1em .5em 0 0;
+    }
+
+    .cart .items .cartSection .itemImg {
+        width: 8em;
+        display: inline;
+        padding-right: 1em;
+    }
+
+    .special {
+        display: block;
+        font-family: "Montserrat", sans-serif;
+    }
+
+    .special .specialContent {
+        padding: 1em 1em 0;
+        display: block;
+        margin-top: .5em;
+        border-top: 1px solid #dadada;
+    }
+
+    .special .specialContent:before {
+        content: "\21b3";
+        font-size: 1.5em;
+        margin-right: 1em;
+        color: #6f6f6f;
+        font-family: helvetica, arial, sans-serif;
+    }
+
+    a.remove {
+        text-decoration: none;
+        font-family: "Montserrat", sans-serif;
+        color: #ffffff;
+        font-weight: bold;
+        background: #e0e0e0;
+        padding: .5em;
+        font-size: .75em;
+        display: inline-block;
+        border-radius: 100%;
+        line-height: .85;
+        -webkit-transition: all 0.25s linear;
+        -moz-transition: all 0.25s linear;
+        -ms-transition: all 0.25s linear;
+        -o-transition: all 0.25s linear;
+        transition: all 0.25s linear;
+    }
+
+    a.remove:hover {
+        background: #f30;
+    }
+
+
+    .promoCode a.btn {
+        margin-left: 10px;
+        float: left;
+        width: 13%;
+        text-align: center;
+        border: 1px solid #ca0019;
+        padding: .75em 0;
+        background: #ca0019;
+    }
+
+    .lp-checkout a.btn {
+        background: #56c1ca;
+    }
+
+    .lp-checkout a.btn:hover {
+        border: 1px solid #f69679;
+        background: #f69679;
+    }
+
+    .promoCode a.btn:hover {
+        border: 1px solid #f69679;
+        background: #f69679;
+    }
+
+    .btn:link, .btn:visited {
+        text-decoration: none;
+        font-family: "Montserrat", sans-serif;
+        letter-spacing: -.015em;
+        font-size: 1em;
+        padding: 1em 3em;
+        color: #fff;
+        background: #82ca9c;
+        font-weight: bold;
+        border-radius: 50px;
+        float: right;
+        text-align: right;
+        -webkit-transition: all 0.25s linear;
+        -moz-transition: all 0.25s linear;
+        -ms-transition: all 0.25s linear;
+        -o-transition: all 0.25s linear;
+        transition: all 0.25s linear;
+    }
+
+    .btn:after {
+        content: "\276f";
+        padding: .5em;
+        position: relative;
+        right: 0;
+        -webkit-transition: all 0.15s linear;
+        -moz-transition: all 0.15s linear;
+        -ms-transition: all 0.15s linear;
+        -o-transition: all 0.15s linear;
+        transition: all 0.15s linear;
+    }
+
+    .btn:hover, .btn:focus, .btn:active {
+        background: #f69679;
+    }
+
+    .btn:hover:after, .btn:focus:after, .btn:active:after {
+        right: -10px;
+    }
+
+    .promoCode .btn {
+        font-size: .85em;
+        paddding: .5em 2em;
+    }
+
+    /* TOTAL AND CHECKOUT  */
+    .subtotal {
+        float: right;
+        width: 35%;
+    }
+
+    .subtotal .totalRow {
+        padding: .5em;
+        text-align: right;
+    }
+
+    .subtotal .totalRow.final {
+        font-size: 1.25em;
+        font-weight: bold;
+    }
+
+    .subtotal .totalRow span {
+        display: inline-block;
+        padding: 0 0 0 1em;
+        text-align: right;
+    }
+
+    .subtotal .totalRow .label {
+        font-family: "Montserrat", sans-serif;
+        font-size: .85em;
+        text-transform: uppercase;
+        color: #777;
+    }
+
+    .subtotal .totalRow .value {
+        letter-spacing: -.025em;
+        width: 35%;
+    }
+
+    @media only screen and (max-width: 39.375em) {
+        .wrap {
+            width: 98%;
+            padding: 2% 0;
+        }
+
+        .projTitle {
+            font-size: 1.5em;
+            padding: 10% 5%;
+        }
+
+        .heading {
+            padding: 1em;
+            font-size: 90%;
+        }
+
+        .cart .items .cartSection {
+            width: 90%;
+            display: block;
+            float: left;
+        }
+
+        .cart .items .cartSection.qtyWrap {
+            width: 10%;
+            text-align: center;
+            padding: .5em 0;
+            float: right;
+        }
+
+        .cart .items .cartSection.qtyWrap:before {
+            content: "QTY";
+            display: block;
+            font-family: "Montserrat", sans-serif;
+            padding: .25em;
+            font-size: .75em;
+        }
+
+        .cart .items .cartSection.prodTotal, .cart .items .cartSection.removeWrap {
+            display: none;
+        }
+
+        .cart .items .cartSection .itemImg {
+            width: 25%;
+        }
+
+        .promoCode, .subtotal {
+            width: 100%;
+        }
+
+        a.btn.continue {
+            width: 100%;
+            text-align: center;
+        }
+
+
+    }
+
+
+</style>
+
+<div class="wrap cf">
+    <h1 class="projTitle">Shopping Cart</h1>
+    <div class="heading cf">
+        <h1>You have <span id="count-cart"></span> item(s) in your cart.</h1>
+        <div class="promoCode">
+            <a href="#" class="btn" id="clear-cart">Clear Cart</a></div>
+        <a href="/store/" class="continue">Continue Shopping</a>
+    </div>
+    <div class="cart">
+        <ul class="cartWrap" id="show-cart">
+            <li class="items odd">
+
+                <div class="infoWrap">
+                    <div class="cartSection">
+                        <img src="http://lorempixel.com/output/technics-q-c-300-300-4.jpg" alt="" class="itemImg"/>
+                        <p class="itemNumber">#QUE-007544-002</p>
+                        <h3>Item Name 1</h3>
+
+                        <p><input type="text" class="qty" placeholder="3"/> x $5.00</p>
+
+                        <p class="stockStatus"> In Stock</p>
+                    </div>
+
+
+                    <div class="prodTotal cartSection">
+                        <p>$15.00</p>
+                    </div>
+                    <div class="cartSection removeWrap">
+                        <a href="#" class="remove">x</a>
+                    </div>
+                </div>
+            </li>
+            <li class="items even">
+
+                <div class="infoWrap">
+                    <div class="cartSection">
+                        <img src="http://lorempixel.com/output/technics-q-c-300-300-4.jpg" alt="" class="itemImg"/>
+                        <p class="itemNumber">#QUE-007544-002</p>
+                        <h3>Item Name 1</h3>
+
+                        <p><input type="text" class="qty" placeholder="3"/> x $5.00</p>
+
+                        <p class="stockStatus"> In Stock</p>
+                    </div>
+
+                    <div class="prodTotal cartSection">
+                        <p>$15.00</p>
+                    </div>
+                    <div class="cartSection removeWrap">
+                        <a href="#" class="remove">x</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="items odd">
+                <div class="infoWrap">
+                    <div class="cartSection">
+
+                        <img src="http://lorempixel.com/output/technics-q-c-300-300-4.jpg" alt="" class="itemImg"/>
+                        <p class="itemNumber">#QUE-007544-002</p>
+                        <h3>Item Name 1</h3>
+
+                        <p><input type="text" class="qty" placeholder="3"/> x $5.00</p>
+
+                        <p class="stockStatus out"> Out of Stock</p>
+                    </div>
+
+
+                    <div class="prodTotal cartSection">
+                        <p>$15.00</p>
+                    </div>
+                    <div class="cartSection removeWrap">
+                        <a href="#" class="remove">x</a>
+                    </div>
+                </div>
+            </li>
+            <li class="items even">
+                <div class="infoWrap">
+                    <div class="cartSection info">
+
+                        <img src="http://lorempixel.com/output/technics-q-c-300-300-4.jpg" alt="" class="itemImg"/>
+                        <p class="itemNumber">#QUE-007544-002</p>
+                        <h3>Item Name 1</h3>
+
+                        <p><input type="text" class="qty" placeholder="3"/> x $5.00</p>
+
+                        <p class="stockStatus"> In Stock</p>
+
+                    </div>
+
+
+                    <div class="prodTotal cartSection">
+                        <p>$15.00</p>
+                    </div>
+
+                    <div class="cartSection removeWrap">
+                        <a href="#" class="remove">x</a>
+                    </div>
+                </div>
+                <div class="special">
+                    <div class="specialContent">Free gift with purchase!, gift wrap, etc!!</div>
+                </div>
+            </li>
+
+
+            <li class="items even">Item 2</li>
+
+        </ul>
+    </div>
+
+
+    <div class="subtotal cf">
+        <ul>
+            <li class="totalRow final"><span class="label">Total</span><span class="value" id="total-cart"></span></li>
+            <li class="totalRow"><span class="label">Your current credit</span><span
+                        class="value">$<%- JSON.parse(userProfile).Credits %></span></li>
+            <li class="totalRow"><span class="label">checkout cost </span><span class="value" id="checkOut-cart"></span>
+            </li>
+            <li class="totalRow"><span class="label">Remain after checkout</span><span class="value" id="credit-remain">$4.00</span>
+            </li>
+            <li class="totalRow"><a href="#" class="btn continue" onclick="submit()">Credit Checkout</a></li>
+        </ul>
+    </div>
+    <div class="subtotal cf">
+        <ul>
+            <li class="totalRow final"><span class="label" style="color: white">hide</span><span class="value"></span>
+            </li>
+            <li class="totalRow"><span class="label">Your current LP</span><span
+                        class="value">$<%- JSON.parse(userProfile).LPoints %></span></li>
+            <li class="totalRow"><span class="label">checkout cost </span><span class="value" id="lp-cost"></span>
+            </li>
+            <li class="totalRow"><span class="label">Remain after checkout</span><span class="value" id="lp-remain">$4.00</span>
+            </li>
+            <li class="totalRow">
+                <div class="lp-checkout"><a href="#" class="btn" onclick="submitLP()">LP Checkout</a></div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<script>
+
+    $(".add-to-cart").click(function (event) {
+        event.preventDefault();
+        let name = $(this).attr("data-name");
+        let price = Number($(this).attr("data-price"));
+        shoppingCart.addItemToCart(1111111, name, price);
+        displayCart();
+    });
+
+    $("#clear-cart").click(function (event) {
+        $('a.remove').parent().parent().parent().hide(300);
+        shoppingCart.clearCart();
+        setTimeout(() => displayCart(), 300);
+    });
+
+
+    function displayCart() {
+        const cartArray = shoppingCart.listCart();
+        let output = "";
+        for (let i in cartArray) {
+            output += "<li class='items even'><div class='infoWrap'><div class='cartSection'><img src='/store/cover/" + cartArray[i].coverImage + "' alt='' class='itemImg' />"
+                + "<p class='itemNumber'>Product ID: " + cartArray[i].productId + "</p>"
+                + "<h3>" + cartArray[i].name + "</h3>"
+                + "<p class='stockStatus'> In Stock</p></div>"
+                + "<div class='prodTotal cartSection'><p>$" + cartArray[i].price + "</p></div>"
+                + "<div class='cartSection removeWrap'><a href='#' class='remove' id='" + cartArray[i].name + "' onclick='delItem(\"" + cartArray[i].name + "\")'>x</a></div>"
+                + "</div></li>"
+        }
+        $("#show-cart").html(output);
+        $("#count-cart").html(shoppingCart.countCart());
+        $("#total-cart").html("$" + shoppingCart.totalCart());
+        $("#checkOut-cart").html("$" + shoppingCart.totalCart());
+        $("#lp-cost").html("$" + shoppingCart.totalCart());
+        $("#credit-remain").html(`$${Number(<%- JSON.parse(userProfile).Credits %>) - Number(shoppingCart.totalCart())}`);
+        $("#lp-remain").html(`$${Number(<%- JSON.parse(userProfile).LPoints %>) - Number(shoppingCart.totalCart())}`);
+
+
+    }
+
+
+    function delItem(name) {
+        shoppingCart.removeItemFromCart(name);
+    }
+
+
+    const shoppingCart = {};
+    shoppingCart.cart = [];
+
+    shoppingCart.removeItemFromCart = function (name) {
+        for (let i in this.cart) {
+            if (this.cart[i].name === name) {
+                this.cart.splice(i, 1);
+                break;
+            }
+        }
+        $(`#${name}`).parent().parent().parent().hide(300);
+        this.saveCart();
+        setTimeout(() => displayCart(), 300);
+    };
+
+
+    shoppingCart.clearCart = function () {
+        this.cart = [];
+        this.saveCart();
+    };
+
+    shoppingCart.countCart = function () {
+        return shoppingCart.cart.length;
+    };
+
+    shoppingCart.totalCart = function () {
+        let totalCost = 0;
+        for (let i in this.cart) {
+            totalCost += this.cart[i].price;
+        }
+        return totalCost
+
+    };
+
+    shoppingCart.listCart = function () {
+        let cartCopy = [];
+        for (let i in this.cart) {
+            const item = this.cart[i];
+            let itemCopy = {};
+            for (let p in item) {
+                itemCopy[p] = item[p];
+            }
+            cartCopy.push(itemCopy);
+        }
+        return cartCopy;
+    };
+
+
+    shoppingCart.saveCart = function () {
+        localStorage.setItem("cart", JSON.stringify(this.cart));
+    };
+
+    shoppingCart.loadCart = function () {
+        if (JSON.parse(localStorage.getItem("cart")) === null) {
+            localStorage.setItem("cart", JSON.stringify(this.cart));
+        }
+        this.cart = JSON.parse(localStorage.getItem("cart"));
+
+    };
+
+    shoppingCart.loadCart();
+
+
+    displayCart();
+
+    //post request
+    function submit() {
+        if (Number(shoppingCart.totalCart()) > Number(<%- JSON.parse(userProfile).Credits %>)) {
+            alert("Your credit is not enough to checkout!!");
+            return;
+        }
+        const cartArray = shoppingCart.listCart();
+        $.ajax({
+            type: 'POST',
+            url: '/store/checkout-order',
+            dataType: 'json',
+            data: {
+                cartArray: JSON.stringify(cartArray),
+                amounts: Number(<%- JSON.parse(userProfile).Credits %>) - Number(shoppingCart.totalCart()),
+                payBy: "CR"
+            },
+            success: function (data) {
+                console.log('success ' + data);
+                alert("Checkout success with credit, thank you!")
+                shoppingCart.clearCart();
+                displayCart();
+            },
+            error: function (error) {
+                const res = JSON.stringify(error);
+                console.log('error ' + res)
+            }
+        })
+
+    }
+
+    function submitLP() {
+        if (Number(shoppingCart.totalCart()) > Number(<%- JSON.parse(userProfile).LPoints %>)) {
+            alert("Your credit is not enough to checkout!!");
+            return;
+        }
+        const cartArray = shoppingCart.listCart();
+        $.ajax({
+            type: 'POST',
+            url: '/store/checkout-order',
+            dataType: 'json',
+            data: {
+                cartArray: JSON.stringify(cartArray),
+                amounts: Number(<%- JSON.parse(userProfile).LPoints %>) - Number(shoppingCart.totalCart()),
+                payBy: "LP"
+            },
+            success: function (data) {
+                console.log('success ' + data);
+                alert("Checkout success with LP, thank you!")
+                shoppingCart.clearCart();
+                displayCart();
+            },
+            error: function (error) {
+                const res = JSON.stringify(error);
+                console.log('error ' + res)
+            }
+        })
+
+    }
+</script>

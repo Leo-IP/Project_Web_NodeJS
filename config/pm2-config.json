@@ -1,0 +1,24 @@
+{
+  "apps": [
+    {
+      "name": "music-store-pm2",
+      "cwd": "../",
+      "script": "bin/www",
+      "instances": 2,
+      "exec_mode": "cluster",
+      "watch": false,
+      "ignore_watch": [
+        "node_modules",
+        "log"
+      ],
+      "env": {
+        "NODE_ENV": "develop",
+        "DEBUG": "express-project*"
+      },
+      "env_production": {
+        "NODE_ENV": "production",
+        "DEBUG": "express-project*"
+      }
+    }
+  ]
+}

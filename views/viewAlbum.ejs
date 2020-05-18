@@ -1,0 +1,368 @@
+<script type="text/javascript" src="/js/jquery.flexisel.js"></script>
+<!-- script for play-list -->
+<link href="/css/jplayer.blue.monday.min.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/js/jquery.jplayer.min.js"></script>
+<script type="text/javascript" src="/js/jplayer.playlist.min.js"></script>
+<script type="text/javascript">
+    // <![CDATA[
+    $(document).ready(function () {
+        new jPlayerPlaylist({
+            jPlayer: "#jquery_jplayer_1",
+            cssSelectorAncestor: "#jp_container_1"
+        }, [
+            <% songList.forEach((song, index)=>{ %>
+            {
+                title: "<%= index + 1 %>. <%= song.Name %>",
+                artist: "<%= albumInfo.Artist %>",
+                mp3: "/store/listen-trial/<%= song.TrialVerFile %>",
+                poster: "/store/cover/<%= albumInfo.CoverImageFile %>"
+            },
+            <% }); %>
+        ], {
+            swfPath: "../../dist/jplayer",
+            supplied: "mp3",
+            useStateClassSkin: true,
+            autoBlur: false,
+            smoothPlayBar: true,
+            keyEnabled: true
+        });
+
+    });
+    // ]]>
+</script>
+<style>
+    .jp-volume-bar-value {
+        background-color: limegreen;
+    }
+
+    .post-media .blog-text {
+        border-top: 1px solid #ddd;
+    }
+
+    .post-media .img-responsive {
+        margin: 0 auto;
+        max-width: 400px;
+    }
+
+    .songName {
+        float: left;
+        margin-top: 5px;
+    }
+
+    .songAddCartDiv {
+        float: right;
+    }
+
+    .songAddCartDiv button {
+        margin-left: 10px;
+    }
+</style>
+<!-- //script for play-list -->
+<div id="page-wrapper">
+    <div class="inner-content">
+        <div class="tittle-head">
+            <h3 class="tittle"><%= albumInfo.Name %> <span class="new">New</span></h3>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="post-media">
+            <img src="/store/cover/<%= albumInfo.CoverImageFile %>" class="img-responsive" alt=""/>
+            <div class="blog-text">
+                <h3 class="h-t"><%= albumInfo.Artist %> - <%= albumInfo.Name %></h3>
+                <div class="entry-meta">
+                    <h6 class="blg"><i class="fa fa-clock-o"></i>Release Date: <%= albumInfo.AddDate %></h6>
+                    <div class="icons">
+                        <i class="fa fa-usd"><%= albumInfo.PriceOverride %></i>
+                        <!--<a href="#"><i class="fa fa-comments-o"></i> 2</a>-->
+                        <!--<a href="#"><i class="fa fa-thumbs-o-up"></i> 152</a>-->
+                        <!--<a href="#"><i class="fa fa-thumbs-o-down"></i> 26</a>-->
+                        <% if(locals.loggedIn === '1') { %>
+                        <button type="button" class="btn btn-success" <% if(isUserBoughtAlbum){ %>disabled<% } %>
+                                onclick="addToCart('<%= albumInfo.ProductId %>','<%= albumInfo.Name %>','<%= albumInfo.PriceOverride %>','<%- albumInfo.CoverImageFile %>')">
+                            Add To Cart
+                        </button>
+                        <% } %>
+                    </div>
+                    <div class="clearfix"></div>
+                    <p><%= albumInfo.Description %></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="inner-content single">
+        <!--/music-right-->
+        <!--<div class="tittle-head">-->
+        <!--<h3 class="tittle">Single <span class="new">Page</span></h3>-->
+        <!--<div class="clearfix"></div>-->
+        <!--</div>-->
+        <div class="single_left">
+            <!--/video-main-->
+            <div class="video-main">
+                <div class="video-record-list">
+                    <div id="jp_container_1" class="jp-video jp-video-270p" role="application"
+                         aria-label="media player">
+                        <div class="jp-type-playlist">
+                            <div id="jquery_jplayer_1" class="jp-jplayer" style="width: 480px; height: 0px;">
+                                <!--<img id="jp_poster_0" src="video/play1.png"-->
+                                <!--style="width: 480px; height: 270px; display: inline;">-->
+                                <!--<video id="jp_video_0" preload="metadata"-->
+                                <!--src="http://192.168.30.9/vijayaa/2015/Dec/mosaic/web/video/Ellie-Goulding.webm"-->
+                                <!--title="1. Ellie-Goulding" style="width: 0px; height: 0px;"></video>-->
+                            </div>
+                            <div class="jp-gui">
+                                <!--<div class="jp-video-play" style="display: block;">-->
+                                <!--<button class="jp-video-play-icon" role="button" tabindex="0">play</button>-->
+                                <!--</div>-->
+                                <div class="jp-interface">
+                                    <div class="jp-progress">
+                                        <div class="jp-seek-bar" style="width: 100%;">
+                                            <div class="jp-play-bar" style="width: 0%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="jp-current-time" role="timer" aria-label="time">00:00</div>
+                                    <div class="jp-duration" role="timer" aria-label="duration">00:18</div>
+                                    <div class="jp-controls-holder">
+                                        <div class="jp-controls">
+                                            <button class="jp-previous" role="button" tabindex="0">previous
+                                            </button>
+                                            <button class="jp-play" role="button" tabindex="0">play</button>
+                                        </div>
+                                        <div class="jp-volume-controls">
+                                            <button class="jp-mute" role="button" tabindex="0">mute</button>
+                                            <button class="jp-volume-max" role="button" tabindex="0">max
+                                                volume
+                                            </button>
+                                            <div class="jp-volume-bar">
+                                                <div class="jp-volume-bar-value" style="width: 100%;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="jp-toggles">
+
+                                            <button class="jp-full-screen" role="button" tabindex="0">full
+                                                screen
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="jp-details" style="display: none;">
+                                        <div class="jp-title" aria-label="title">1. Ellie-Goulding</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jp-playlist">
+                                <ul style="display: block;">
+
+                                </ul>
+                            </div>
+                            <div class="jp-no-solution" style="display: none;">
+                                <span>Update Required</span>
+                                To play the media you will need to either update your browser to a recent
+                                version or update your <a href="http://get.adobe.com/flashplayer/"
+                                                          target="_blank">Flash plugin</a>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--//video-main-->
+            <!-- /agileinfo -->
+        </div>
+        <div class="response">
+            <h4>Songs</h4>
+            <ul class="list-group">
+                <% songList.forEach((song, index)=>{ %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div class="songName"><%= index + 1 %>. <%= song.Name %></div>
+                        <div class="songAddCartDiv">
+                            <i class="fa fa-usd"><%= song.Price %></i>
+                            <% if(isUserBoughtAlbum || userBoughtSongs.indexOf(song.ProductId) !== -1){ %>
+                            <a href="/store/download-song?albumpid=<%= albumInfo.ProductId %>&songpid=<%= song.ProductId %>"
+                               target="_blank" class="btn btn-primary">Download</a>
+                            <% }else{ %>
+                                <% if(locals.loggedIn === '1') { %>
+                                <button type="button" class="btn btn-success"
+                                        onclick="addToCart('<%= song.ProductId %>','<%= song.Name %>','<%= song.Price %>','<%- albumInfo.CoverImageFile %>')">
+                                    Add To Cart
+                                </button>
+                                    <% } %>
+                            <% } %>
+                        </div>
+                        <div class="clearfix"></div>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
+        <!-- /agileits -->
+        <div class="clearfix"></div>
+        <!--//music-right-->
+    </div>
+    <!-- /w3l-agileits-->
+    <!--body wrapper start-->
+    <!--<div class="review-slider">-->
+
+        <!--<div class="tittle-head">-->
+            <!--<h3 class="tittle">Featured Albums <span class="new"> New</span></h3>-->
+            <!--<div class="clearfix"></div>-->
+        <!--</div>-->
+        <!--<ul id="flexiselDemo1">-->
+            <!--<li>-->
+                <!--<a href="single.html"><img src="/images/v1.jpg" alt=""/></a>-->
+                <!--<div class="slide-title"><h4>Adele21</h4></div>-->
+                <!--<div class="date-city">-->
+                    <!--<h5>Jan-02-16</h5>-->
+                    <!--<div class="buy-tickets">-->
+                        <!--<a href="single.html">READ MORE</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<a href="single.html"><img src="/images/v2.jpg" alt=""/></a>-->
+                <!--<div class="slide-title"><h4>Adele21</h4></div>-->
+                <!--<div class="date-city">-->
+                    <!--<h5>Jan-02-16</h5>-->
+                    <!--<div class="buy-tickets">-->
+                        <!--<a href="single.html">READ MORE</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<a href="single.html"><img src="/images/v3.jpg" alt=""/></a>-->
+                <!--<div class="slide-title"><h4>Shomlock</h4></div>-->
+                <!--<div class="date-city">-->
+                    <!--<h5>Jan-02-16</h5>-->
+                    <!--<div class="buy-tickets">-->
+                        <!--<a href="single.html">READ MORE</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<a href="single.html"><img src="/images/v4.jpg" alt=""/></a>-->
+                <!--<div class="slide-title"><h4>Stuck on a feeling</h4></div>-->
+                <!--<div class="date-city">-->
+                    <!--<h5>Jan-02-16</h5>-->
+                    <!--<div class="buy-tickets">-->
+                        <!--<a href="single.html">READ MORE</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<a href="single.html"><img src="/images/v5.jpg" alt=""/></a>-->
+                <!--<div class="slide-title"><h4>Ricky Martine </h4></div>-->
+                <!--<div class="date-city">-->
+                    <!--<h5>Jan-02-16</h5>-->
+                    <!--<div class="buy-tickets">-->
+                        <!--<a href="single.html">READ MORE</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<a href="single.html"><img src="/images/v6.jpg" alt=""/></a>-->
+                <!--<div class="slide-title"><h4>Ellie Goluding </h4></div>-->
+                <!--<div class="date-city">-->
+                    <!--<h5>Jan-02-16</h5>-->
+                    <!--<div class="buy-tickets">-->
+                        <!--<a href="single.html">READ MORE</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<a href="single.html"><img src="/images/v6.jpeg" alt=""/></a>-->
+                <!--<div class="slide-title"><h4>Fifty Shades </h4></div>-->
+                <!--<div class="date-city">-->
+                    <!--<h5>Jan-02-16</h5>-->
+                    <!--<div class="buy-tickets">-->
+                        <!--<a href="single.html">READ MORE</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</div>-->
+</div>
+<div class="clearfix"></div>
+
+<script type="text/javascript">
+    // $(window).load(function () {
+    //     $("#flexiselDemo1").flexisel({
+    //         visibleItems: 5,
+    //         animationSpeed: 1000,
+    //         autoPlay: true,
+    //         autoPlaySpeed: 3000,
+    //         pauseOnHover: false,
+    //         enableResponsiveBreakpoints: true,
+    //         responsiveBreakpoints: {
+    //             portrait: {
+    //                 changePoint: 480,
+    //                 visibleItems: 2
+    //             },
+    //             landscape: {
+    //                 changePoint: 640,
+    //                 visibleItems: 3
+    //             },
+    //             tablet: {
+    //                 changePoint: 800,
+    //                 visibleItems: 4
+    //             }
+    //         }
+    //     });
+    // });
+</script>
+
+<script>
+    // function addToCart(productId, name, price, coverImage) {
+    //     shoppingCart.addItemToCart(productId, name, price, coverImage);
+    // }
+    //
+    // const shoppingCart = {};
+    // shoppingCart.cart = [];
+    //
+    //
+    // shoppingCart.Item = function (productId, name, price, coverImage) {
+    //     this.name = name;
+    //     this.price = price;
+    //     this.productId = productId;
+    //     this.coverImage = coverImage;
+    // };
+    //
+    // shoppingCart.addItemToCart = function (productId, name, price, coverImage) {
+    //     for (let i in this.cart) {
+    //         if (this.cart[i].name === name) {
+    //             this.saveCart();
+    //             return;
+    //         }
+    //     }
+    //     const item = new this.Item(productId, name, Number(price), coverImage);
+    //     this.cart.push(item);
+    //     this.saveCart();
+    // };
+    //
+    //
+    // shoppingCart.countCart = function () {
+    //     return shoppingCart.cart.length;
+    // };
+    //
+    // shoppingCart.totalCart = function () {
+    //     let totalCost = 0;
+    //     for (let i in this.cart) {
+    //         totalCost += this.cart[i].price;
+    //     }
+    //     return totalCost
+    //
+    // };
+    //
+    // shoppingCart.saveCart = function () {
+    //     localStorage.setItem("cart", JSON.stringify(this.cart));
+    // };
+    //
+    // shoppingCart.loadCart = function () {
+    //     if (JSON.parse(localStorage.getItem("cart")) === null) {
+    //         localStorage.setItem("cart", JSON.stringify(this.cart));
+    //     }
+    //     this.cart = JSON.parse(localStorage.getItem("cart"));
+    //
+    // };
+    // shoppingCart.loadCart();
+</script>
+
+
+

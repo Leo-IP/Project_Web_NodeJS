@@ -1,0 +1,183 @@
+<style>
+    td {
+        text-align: center
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script>
+    let cart1 = [];
+    $(function () {
+        if (localStorage.cart1) {
+            cart1 = JSON.parse(localStorage.cart1);
+            showCart();
+        }
+    });
+
+    function addToCart(productId, price, name) {
+        let qty = $("#qty").val();
+        // update qty if product is already present
+        for (let i in cart1) {
+            if (cart1[i].Product === name) {
+                cart1[i].Qty = qty;
+                showCart();
+                saveCart();
+                return;
+            }
+        }
+        // create JavaScript Object
+        let item = {Product: name, Price: price, ProductId: productId};
+        cart1.push(item);
+        saveCart();
+        showCart();
+    }
+
+    function deleteItem(index) {
+        cart1.splice(index, 1); // delete item at index
+        showCart();
+        saveCart();
+    }
+
+    function saveCart() {
+        if (window.localStorage) {
+            localStorage.cart1 = JSON.stringify(cart1);
+        }
+    }
+
+    function showCart() {
+        if (cart1.length === 0) {
+            $("#cart").css("visibility", "hidden");
+            return;
+        }
+
+        $("#cart").css("visibility", "visible");
+        $("#cartBody").empty();
+        let total = 0;
+        for (let i in cart1) {
+            let item = cart1[i];
+            total = total + parseInt(item.Price);
+            let row = "<tr><td>" + item.Product + "</td><td>" +
+                item.Price + "</td><td>" + item.ProductId + "</td><td>"
+                + total + "</td><td>"
+                + "<button onclick='deleteItem(" + i + ")'>Delete</button></td></tr>";
+            $("#cartBody").append(row);
+        }
+
+    }
+</script>
+
+<div id="page-wrapper">
+    <div class="inner-content">
+        <h2>Cart</h2>
+
+
+        <p></p>
+        <table id="cart" border="1" style="visibility:hidden; width:100%">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="cartBody">
+
+            </tbody>
+        </table>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Cover</th>
+                        <th>Album Id</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Artist</th>
+                        <th>Quantity</th>
+                        <th>Price Override</th>
+                        <th>Add Date</th>
+                        <th>Last Updated</th>
+                        <th>Product ID</th>
+                        <th>Add Cart</th>
+                    </tr>
+                    </thead>
+                                 <tbody>
+                    <% albumItems.forEach((val)=>{ %>
+                        <tr>
+                            <td><img src="/store/cover/<%- val.CoverImageFile %>" style="width: 80px"/></td>
+                            <td><%= val.AlbumId %></td>
+                            <td><%= val.Name %></td>
+                            <td><%= val.Description %></td>
+                            <td><%= val.Artist %></td>
+                            <td><%= val.Quantity %></td>
+                            <td><%= val.PriceOverride %></td>
+                            <td><%= val.AddDate %></td>
+                            <td><%= val.ModifyDate %></td>
+                            <!--<td><a href="./edit-songs-page?albumid=<%= val.AlbumId %>" class="btn btn-info">Edit</a></td>-->
+                            <!--<td><a href="./edit-album-page?albumid=<%= val.AlbumId %>" class="btn btn-warning">Edit</a></td>-->
+                            <td><%= val.ProductId %></td>
+                            <td>
+                                <button id="btnAdd"
+                                        onclick="addToCart('<%= val.ProductId %>','<%= val.ProductId %>','<%= val.Name %>')">
+                                    Add To Cart
+                                </button>
+                            </td>
+                            <!--<td><button class="btn btn-danger" onclick="confirmDel(<%= val.AlbumId %>)">Delete</button></td>-->
+                        </tr>
+                    <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Cover</th>
+                        <th>Album Id</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Artist</th>
+                        <th>Quantity</th>
+                        <th>Price Override</th>
+                        <th>Add Date</th>
+                        <th>Last Updated</th>
+                        <th>Product ID</th>
+                        <th>Add Cart</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <% songList.forEach((val)=>{ %>
+                        <tr>
+                            <td><img src="/store/cover/<%- val.CoverImageFile %>" style="width: 80px"/></td>
+                            <td><%= val.SongId %></td>
+                            <td><%= val.Name %></td>
+                            <td><%= val.Description %></td>
+                            <td><%=      %></td>
+                            <td><%= val.Quantity %></td>
+                            <td><%=      %></td>
+                            <td><%= val.AddDate %></td>
+                            <td><%= val.ModifyDate %></td>
+                            <!--<td><a href="./edit-songs-page?albumid=<%= val.AlbumId %>" class="btn btn-info">Edit</a></td>-->
+                            <!--<td><a href="./edit-album-page?albumid=<%= val.AlbumId %>" class="btn btn-warning">Edit</a></td>-->
+                            <td><%= val.ProductId %></td>
+                            <td>
+                                <button id="btnAdd"
+                                        onclick="addToCart('<%= val.ProductId %>','<%= val.Price %>','<%= val.Name %>')">
+                                    Add To Cart
+                                </button>
+                            </td>
+                            <!--<td><button class="btn btn-danger" onclick="confirmDel(<%= val.AlbumId %>)">Delete</button></td>-->
+                        </tr>
+                    <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

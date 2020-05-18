@@ -1,0 +1,317 @@
+<%
+const pageProps = {
+    "browse": {
+        active: '',
+        title: 'Music Store'
+    },
+    "userProfile": {
+        active: '',
+        title: 'Profile'
+    },
+    "purchaseHistory": {
+        active: '',
+        title: 'Purchase History'
+    }
+};
+if (pageProps[page]) pageProps[page].active = 'active'
+else pageProps[page] = {active: '', title: ''};
+if (locals.title) pageProps[page].title = locals.title;
+%>
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Music Store - <%= pageProps[page].title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content="Music Store"/>
+    <script type="application/x-javascript">
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.css" rel='stylesheet' type='text/css'/>
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel='stylesheet' type='text/css'/>
+    <!-- Graph CSS -->
+    <link href="/css/font-awesome.css" rel="stylesheet">
+    <!-- jQuery -->
+    <!-- lined-icons -->
+    <link rel="stylesheet" href="/css/icon-font.css" type='text/css'/>
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <!-- //lined-icons -->
+    <link rel="stylesheet" type="text/css" media="all" href="/css/audio.css">
+    <!-- Meters graphs -->
+    <!--<script src="js/jquery-2.1.4.js"></script>-->
+    <script src="/js/jquery-2.1.4.js"></script>
+    <script src="/js/jquery-ui-1.12.1.js"></script>
+
+
+    <style>
+        .qty {
+            position: absolute;
+            right: 0px;
+            top: 1px;
+            width: 18px;
+            height: 18px;
+            line-height: 18px;
+            text-align: center;
+            border-radius: 50%;
+            font-size: 10px;
+            color: #FFF;
+            background-color: #D10024;
+        }
+        .header-section{
+            height: 65px;
+        }
+        .col-md-4.login-pop{
+            float: right;
+            margin-right: 20px;
+        }
+        a.top-sign{
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<!-- /w3layouts-agile -->
+<body class="sticky-header left-side-collapsed">
+<section>
+    <!-- left side start-->
+    <div class="left-side sticky-left-side">
+
+        <!--logo and iconic logo start-->
+        <div class="logo">
+            <h1><a href="/store/">Music</a></h1>
+        </div>
+        <div class="logo-icon text-center">
+            <a href="/store/">M </a>
+        </div>
+        <!-- /w3l-agile -->
+        <!--logo and iconic logo end-->
+        <div class="left-side-inner">
+
+            <!--sidebar nav start-->
+            <ul class="nav nav-pills nav-stacked custom-nav">
+                <li class="<%=pageProps.browse.active%>">
+                    <a id="home-page-href" href="/store/">
+                        <i class="lnr lnr-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+
+                <% if(locals.loggedIn === '1') { %>
+                    <li class="<%=pageProps.userProfile.active%>">
+                        <a href="/user/profile">
+                            <i class="lnr lnr-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                <% } %>
+                <% if(locals.loggedIn === '1') { %>
+                <li>
+                    <a href="/store/cart">
+                        <i class="lnr lnr-cart"></i>
+                        <span>Cart</span>
+                        <div class="qty" style="display: none"></div>
+                    </a>
+                </li>
+                <% } %>
+                <!--<li>-->
+                    <!--<a href="#">-->
+                        <!--<i class="lnr lnr-music-note">-->
+                        <!--</i> <span>Albums</span>-->
+                    <!--</a>-->
+                <!--</li>-->
+
+                <% if(locals.loggedIn === '1') { %>
+                    <li class="<%=pageProps.purchaseHistory.active%>">
+                        <a href="/user/history">
+                            <i class="lnr lnr-history"></i>
+                            <span>Purchase history</span>
+                        </a>
+                    </li>
+                <% } %>
+
+                <% if(locals.loggedIn === '1') { %>
+                    <li>
+                        <a href="javascript: logout()">
+                            <i class="lnr lnr-exit"></i>
+                            <span>Logout</span></a>
+                    </li>
+                <% } %>
+            </ul>
+            <!--sidebar nav end-->
+        </div>
+    </div>
+    <!-- /w3layouts-agile -->
+    <!-- /w3l-agile -->
+    <!-- signup -->
+    <div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content modal-info">
+                <div class="modal-header">
+                    <button id="closeRegFormButton" type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                onclick="javascript: clearRegistrationForm()" aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body modal-spa">
+                    <div class="sign-grids">
+                        <div class="sign">
+                            <!--<div class="sign-left">-->
+                            <!--<ul>-->
+                            <!--<li><a class="fb" href="#"><i></i>Sign in with Facebook</a></li>-->
+                            <!--<li><a class="goog" href="#"><i></i>Sign in with Google</a></li>-->
+                            <!--<li><a class="linkin" href="#"><i></i>Sign in with Linkedin</a></li>-->
+                            <!--</ul>-->
+                            <!--</div>-->
+                            <div class="sign-right">
+                                <form id="sign-in-form" action="javascript: registration()" method="post">
+
+                                    <h3>Create your account </h3>
+
+                                    <input type="text" value="" placeholder="First name" id="regFirstName"
+                                           class="registration">
+                                    <pre class="regErrorMessage" id="firstNameErrorMessage"></pre>
+
+                                    <input type="text" value="" placeholder="Last name" id="regLastName"
+                                           class="registration" onfocus="this.value = '';"
+                                           onblur="if (this.value == '') {this.value = '';}">
+                                    <pre class="regErrorMessage" id="lastNameErrorMessage"></pre>
+
+                                    <input type="text" value="" placeholder="Birthday" id="regBirthday"
+                                           class="registration"
+                                           onclick="javascript: callingDatePicker()">
+                                    <pre class="regErrorMessage" id="birthdayErrorMessage"></pre>
+
+                                    <input type="text" value="" placeholder="Phone" id="regPhone" class="registration"
+                                           onfocus="this.value = '';"
+                                           onblur="if (this.value == '') {this.value = '';}">
+                                    <pre class="regErrorMessage" id="phoneErrorMessage"></pre>
+
+                                    <input type="text" value="" placeholder="Email" id="regEmail" class="registration"
+                                           onfocus="this.value = '';"
+                                           onblur="if (this.value == '') {this.value = '';}">
+                                    <pre class="regErrorMessage" id="emailErrorMessage"></pre>
+
+                                    <input type="password" value="" placeholder="Password" id="regPassword"
+                                           class="registration" onfocus="this.value = '';"
+                                           onblur="if (this.value == '') {this.value = '';}">
+                                    <pre class="regErrorMessage" id="passwordErrorMessage"></pre>
+
+                                    <input type="submit" value="CREATE ACCOUNT">
+                                </form>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <p>By logging in you agree to our <span>Terms and Conditions</span> and
+                            <span>Privacy Policy</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //signup -->
+    <!-- /w3l-agile -->
+    <!-- left side end-->
+    <div class="header-section">
+        <!--toggle button start-->
+        <a class="toggle-btn  menu-collapsed"><i class="fa fa-bars"></i></a>
+        <!--toggle button end-->
+        <!--notification menu start -->
+        <div class="menu-right">
+            <div class="profile_details">
+
+                <% if(locals.loggedIn !== '1') { %>
+                    <div class="col-md-4 login-pop">
+                        <div id="loginpop"><a href="#" id="loginButton"><span>Login <i
+                                            class="arrow glyphicon glyphicon-chevron-right"></i></span></a><a
+                                    class="top-sign"
+                                    href="#"
+                                    data-toggle="modal"
+                                    data-target="#myModal5"><i
+                                        class="fa fa-sign-in"></i></a>
+                            <div id="loginBox">
+                                <form action="javascript: login()" method="post" id="loginForm">
+                                    <fieldset id="body">
+                                        <fieldset>
+                                            <label id="loginError" style="display: none; color:red"></label>
+                                            <label for="email">Email Address</label>
+                                            <input type="text" name="email" id="email">
+                                        </fieldset>
+                                        <fieldset>
+                                            <label for="password">Password</label>
+                                            <input type="password" name="password" id="password">
+                                        </fieldset>
+                                        <input type="submit" id="login" value="Sign in">
+                                        <!--<label for="checkbox"><input type="checkbox" id="checkbox"> <i>Remember-->
+                                        <!--me</i></label>-->
+                                    </fieldset>
+                                    <span><a href="#">Forgot your password?</a></span>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                <% } %>
+
+            </div>
+            <!-------->
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- main content start-->
+    <div class="main-content">
+        <%- include(page) %>
+    </div>
+    <!--body wrapper end-->
+    <div class="footer">
+        <div class="footer-grid">
+            <h3>Navigation</h3>
+            <ul class="list1">
+                <li><a>Home</a></li>
+                <li><a>All Songs</a></li>
+                <li><a>Albums</a></li>
+                <li><a>Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-grid">
+            <h3>Our Support</h3>
+            <ul class="list1">
+                <li><a>Site Map</a></li>
+                <li><a>Search Terms</a></li>
+                <li><a>Contact Us</a></li>
+                <li><a>Addresses</a></li>
+            </ul>
+        </div>
+        <div class="footer-grid footer-grid_last">
+            <h3>About Us</h3>
+            <ul class="list1">
+                <li><a href="/mydesign/">My Design</a></li>
+                <li><a>Project_Web_NodeJS</a></li>
+            </ul>
+            <p class="f_text">Phone: &nbsp;&nbsp;&nbsp;7777-7777</p>
+            <p class="email">Email : &nbsp;<span><a href="mailto:mail@example.com">info@mailing</a></span></p>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!--footer section start-->
+    <footer>
+        <p>&copy 2020 Project_Web_NodeJS. All Rights Reserved | Design by <a href="https://w3layouts.com/" target="_blank">w3layouts.</a>
+        </p>
+    </footer>
+    <!--footer section end-->
+    <!-- /w3l-agile -->
+    <!-- main content end-->
+</section>
+<script src="/js/jquery.nicescroll.js"></script>
+<script src="/js/scripts.js"></script>
+<script type="text/javascript" src="/js/userfunctions.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.js"></script>
+</body>
+</html>
+
+<script src="/js/cart.js"></script>

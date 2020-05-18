@@ -1,0 +1,256 @@
+<style>
+    .table > tbody > tr > td, .table > tfoot > tr > td {
+        vertical-align: middle;
+    }
+
+    @media screen and (max-width: 600px) {
+        table#cart tbody td .form-control {
+            width: 20%;
+            display: inline !important;
+        }
+
+        .actions .btn {
+            width: 36%;
+            margin: 1.5em 0;
+        }
+
+        .actions .btn-info {
+            float: left;
+        }
+
+        .actions .btn-danger {
+            float: right;
+        }
+
+        table#cart thead {
+            display: none;
+        }
+
+        table#cart tbody td {
+            display: block;
+            padding: .6rem;
+            min-width: 320px;
+        }
+
+        table#cart tbody tr td:first-child {
+            background: #333;
+            color: #fff;
+        }
+
+        table#cart tbody td:before {
+            content: attr(data-th);
+            font-weight: bold;
+            display: inline-block;
+            width: 8rem;
+        }
+
+
+        table#cart tfoot td {
+            display: block;
+        }
+
+        table#cart tfoot td .btn {
+            display: block;
+        }
+
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+<div>
+    <ul>
+        <li><a class="add-to-cart" href="#" data-name="Apple" data-price="1.22">Apple $1.22</a></li>
+        <li><a class="add-to-cart" href="#" data-name="Banana" data-price="1.33">Apple $1.33</a></li>
+        <li><a class="add-to-cart" href="#" data-name="Shoe" data-price="11.22">Apple $11.22</a></li>
+        <li><a class="add-to-cart" href="#" data-name="Frisbee" data-price="5.22">Apple $5.22</a></li>
+    </ul>
+    <button id="clear-cart">Clear Cart</button>
+</div>
+
+<div>
+    <!--<ul id="show-cart">-->
+
+    <!--</ul>-->
+    <div>You have <span id="count-cart"></span> item(s) in your cart.</div>
+
+    <div> Total Cart: $<span id="total-cart"></span></div>
+</div>
+
+<div class="container">
+    <table id="cart" class="table table-hover table-condensed">
+        <thead>
+        <tr>
+            <th style="width:auto">ProductId</th>
+            <th style="width:auto">AlbumId</th>
+            <th style="width:auto">SongId</th>
+            <th style="width:auto">Price</th>
+            <th style="width:auto" class="text-center">Remove</th>
+
+        </tr>
+        </thead>
+        <tbody id="show-cart">
+
+        <!--<td data-th="Product">-->
+        <!--<div class="row">-->
+        <!--<div class="col-sm-2 hidden-xs"><img src="http://placehold.it/100x100" alt="..."-->
+        <!--class="img-responsive"/></div>-->
+        <!--<div class="col-sm-10">-->
+        <!--<h4 class="nomargin">Product 1</h4>-->
+        <!--<p>Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.-->
+        <!--Lorem ipsum dolor sit amet.</p>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</td>-->
+        <!--<td data-th="Price">$1.99</td>-->
+        <!--<td data-th="Quantity">-->
+        <!--<input type="number" class="form-control text-center" value="1">-->
+        <!--</td>-->
+        <!--<td data-th="Subtotal" class="text-center">1.99</td>-->
+        <!--<td class="actions" data-th="">-->
+        <!--<button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>-->
+        <!--<button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>-->
+        <!--</td>-->
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr class="visible-xs">
+            <td class="text-center"><strong>Total 1.99</strong></td>
+        </tr>
+        <tr>
+            <td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+            <td colspan="2" class="hidden-xs"></td>
+            <td class="hidden-xs text-center"><strong id="show-total"></strong></td>
+            <td><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+
+<script>
+
+    $(".add-to-cart").click(function (event) {
+        event.preventDefault();
+        let name = $(this).attr("data-name");
+        let price = Number($(this).attr("data-price"));
+        shoppingCart.addItemToCart(name, price, 1);
+        displayCart();
+    });
+
+    $("#clear-cart").click(function (event) {
+        shoppingCart.clearCart();
+        displayCart();
+    });
+
+
+    function displayCart() {
+        const cartArray = shoppingCart.listCart();
+        let output = "";
+        for (let i in cartArray) {
+            output += "<tr><td>" + cartArray[i].name + "</td>"
+                + "<td >" + "test" + "</td>"
+                + "<td>" + "<button class='delete-item' onclick='delItem(\"" + cartArray[i].name + "\")' data-name='" + cartArray[i].name + "'>x</button>" + "</td>"
+                + "<td>" + cartArray[i].price + "</td>"
+                + "<td align='center'>" + "<button class='delete-item' onclick='delItem(\"" + cartArray[i].name + "\")' data-name='" + cartArray[i].name + "'>x</button>" + "</td>"
+                + "</tr>";
+
+        }
+        $("#show-cart").html(output);
+        $("#count-cart").html(shoppingCart.countCart());
+        $("#total-cart").html(shoppingCart.totalCart());
+        $("#show-total").html("$" + shoppingCart.totalCart());
+
+    }
+
+
+    function delItem(name) {
+        console.log("name", name);
+        shoppingCart.removeItemFromCart(name)
+    }
+
+
+    const shoppingCart = {};
+    shoppingCart.cart = [];
+
+    shoppingCart.Item = function (name, price) {
+        this.name = name;
+        this.price = price;
+    };
+
+    shoppingCart.addItemToCart = function (name, price) {
+        for (let i in this.cart) {
+            if (this.cart[i].name === name) {
+                this.saveCart();
+                return;
+            }
+        }
+        const item = new this.Item(name, price);
+        this.cart.push(item);
+        this.saveCart();
+    };
+
+
+    shoppingCart.removeItemFromCart = function (name) {
+        console.log("remove", name)
+        for (let i in this.cart) {
+            if (this.cart[i].name === name) {
+                this.cart.splice(i, 1);
+                break;
+            }
+        }
+        this.saveCart();
+        displayCart();
+    };
+
+
+    shoppingCart.clearCart = function () {
+        this.cart = [];
+        this.saveCart();
+    };
+
+    shoppingCart.countCart = function () {
+        return shoppingCart.cart.length;
+    };
+
+    shoppingCart.totalCart = function () {
+        let totalCost = 0;
+        for (let i in this.cart) {
+            totalCost += this.cart[i].price;
+        }
+        return totalCost.toFixed(2);
+
+    };
+
+    shoppingCart.listCart = function () {
+        let cartCopy = [];
+        for (let i in this.cart) {
+            const item = this.cart[i];
+            let itemCopy = {};
+            for (let p in item) {
+                itemCopy[p] = item[p];
+            }
+            cartCopy.push(itemCopy);
+        }
+        return cartCopy;
+    };
+
+
+    shoppingCart.saveCart = function () {
+        localStorage.setItem("cart", JSON.stringify(this.cart));
+    };
+
+    shoppingCart.loadCart = function () {
+        this.cart = JSON.parse(localStorage.getItem("cart"));
+    };
+
+
+    shoppingCart.loadCart();
+
+
+    displayCart();
+
+</script>

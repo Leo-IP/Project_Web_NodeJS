@@ -1,0 +1,58 @@
+<div id="page-wrapper">
+    <div class="inner-content">
+
+        <div class="purchase-history">
+            <h1>Purchase history</h1>
+
+            <table>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Artist</th>
+                    <th>Description</th>
+                    <th>Cost</th>
+                    <th>Product type</th>
+                    <th>Payment method</th>
+                    <th>Purchase time</th>
+                </tr>
+
+                <% for(var i = 0; i < history.length; i++) { %>
+                    <tr id="purchaseHistory<%= history[i].OrderId%>">
+                        <td><%= history[i].Name %></td>
+                        <td><%= history[i].Artist %></td>
+
+                        <% if(history[i].ProductType === 'S') {%>
+                            <td></td>
+                        <% } else {%>
+                            <td><%= history[i].Description%></td>
+                        <% } %>
+
+                        <td><%= history[i].Cost%></td>
+
+                        <% if(history[i].ProductType === 'S') {%>
+                        <td> Song </td>
+                        <% } else {%>
+                        <td> Album</td>
+                        <% } %>
+
+                        <% if(history[i].PayBy === 'CR') {%>
+                        <td> Credit </td>
+                        <% } else {%>
+                        <td> Loyalty point </td>
+                        <% } %>
+
+                        <td><%= history[i].AddDate %></td>
+
+                        <td><input class="btn btn-primary" type="button" value="Refund" onclick="javascript: refund(<%= history[i].OrderId%>)"/></td>
+                    </tr>
+
+                <% }%>
+
+            </table>
+
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <!--body wrapper end-->
+    <!-- /w3l-agile-info -->
+</div>

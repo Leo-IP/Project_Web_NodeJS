@@ -1,0 +1,80 @@
+<div id="content-wrapper">
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/admin/">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Add New Album</li>
+        </ol>
+        <!-- Page Content -->
+        <h1>New Album</h1>
+
+        <div class="card mx-auto mt-5">
+            <div class="card-header">
+                <i class="fas fa-play-circle"></i>
+                Album Details
+            </div>
+            <div class="card-body">
+                <form action="/admin/create-album" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <input type="text" id="albumName" class="form-control" name="name" placeholder="Name" required autofocus="autofocus">
+                            <label for="albumName">Name</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <input type="text" id="albumDescr" class="form-control" name="description" placeholder="Description" required>
+                            <label for="albumDescr">Description</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <input type="text" id="albumArtist" class="form-control" name="artist" placeholder="Artist" required>
+                            <label for="albumArtist">Artist</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <input type="number" id="albumQuantity" class="form-control" name="quantity" placeholder="Quantity" required>
+                            <label for="albumQuantity">Quantity</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            <input type="number" id="albumPriceOverride" class="form-control" name="priceOverride" placeholder="PriceOverride">
+                            <label for="albumPriceOverride">$ Price Override</label>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Cover Image</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" accept=".jpg, .jpeg, .png, .gif" class="custom-file-input" name="coverImage" id="coverImage" required>
+                            <label class="custom-file-label" for="coverImage">Choose image</label>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
+<script>
+    $(document).ready(function () {
+        $('#coverImage').on('change',function(){
+            //replace the "Choose a file" label
+            $(this).next('.custom-file-label').text($(this)[0].files[0].name);
+        });
+    });
+</script>

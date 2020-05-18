@@ -1,0 +1,49 @@
+<div id="content-wrapper">
+    <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/admin/">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Report - Orders</li>
+        </ol>
+        <h1>Orders Summary</h1>
+
+        <!-- Area Chart Example-->
+        <div class="card mt-5">
+            <div class="card-header">
+                <i class="fas fa-chart-area"></i>
+                Total orders of Last 7 days
+            </div>
+            <div class="card-body">
+                <canvas id="myAreaChart" width="100%" height="30"></canvas>
+            </div>
+        </div>
+
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <i class="fas fa-chart-bar"></i>
+                Normal Sales & Loyalty Point Sales
+            </div>
+            <div class="card-body">
+                <canvas id="myBarChart" width="100%" height="50"></canvas>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- /.container-fluid -->
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: '/admin/statistics',
+            success: function (data) {
+                newChart($('#myAreaChart')[0], data.labels, data.total, 'Order(s)');
+                newBarChart($('#myBarChart')[0], data.labels, data.CR, data.LP, 'Normal', 'By LPoints');
+            }
+        });
+    });
+</script>

@@ -1,0 +1,226 @@
+<style>
+    audio {
+        height: 38px;
+        width: 100%;
+    }
+</style>
+<div id="content-wrapper">
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/admin/tables">Albums Management</a>
+            </li>
+            <li class="breadcrumb-item active">Edit Songs of Album</li>
+        </ol>
+        <!-- Page Content -->
+        <h1>Edit Songs of Album</h1>
+
+        <div class="card mx-auto mt-5 mb-5">
+            <div class="card-header">
+                <i class="fas fa-play-circle"></i>
+                Album - <%= albumInfo.Name %>
+            </div>
+            <div class="card-body text-center">
+                <img src="/store/cover/<%= albumInfo.CoverImageFile %>" style="width: 200px"/>
+            </div>
+        </div>
+
+        <div class="songForms">
+            <% songList.forEach((val, index)=>{ %>
+                <div class="card mx-auto mb-3">
+                    <div class="card-header">
+                        <i class="fas fa-music"></i>
+                        Song <%= index + 1 %>
+                        <button class="btn btn-danger" style="float: right" onclick="ajaxDelSong(<%= val.SongId %>)">
+                            Delete
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <form class="submitSongForm" enctype="multipart/form-data">
+                            <input type="hidden" id="albumName" name="songId" value="<%= val.SongId %>">
+                            <input type="hidden" id="albumName" name="albumId" value="<%= val.AlbumId %>">
+                            <div class="form-row mb-3">
+                                <div class="col form-label-group">
+                                    <input type="text" id="songName<%= index %>" class="form-control" name="name"
+                                           placeholder="Name"
+                                           required value="<%= val.Name %>">
+                                    <label for="songName<%= index %>">Name</label>
+                                </div>
+
+                                <div class="col form-label-group">
+                                    <input type="number" id="songPrice<%= index %>" class="form-control" name="price"
+                                           placeholder="Price"
+                                           required value="<%= val.Price %>">
+                                    <label for="songPrice<%= index %>">$ Price</label>
+                                </div>
+
+                                <div class="col form-label-group">
+                                    <input type="number" id="songQuantity<%= index %>" class="form-control"
+                                           name="quantity"
+                                           placeholder="Quantity" required value="<%= val.Quantity %>">
+                                    <label for="songQuantity<%= index %>">Quantity</label>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Trial song</span>
+                                </div>
+                                <div class="custom-file">
+                                    <input type="file" accept=".mp3" class="custom-file-input" name="songTrialVer"
+                                           id="songTrialVer<%= index %>">
+                                    <label class="custom-file-label"
+                                           for="songTrialVer<%= index %>"><%= val.TrialVerFile %></label>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <audio controls>
+                                    <source src="/admin/song-file/<%= val.TrialVerFile %>" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Full song</span>
+                                </div>
+                                <div class="custom-file">
+                                    <input type="file" accept=".mp3" class="custom-file-input" name="songFullVer"
+                                           id="songFullVer<%= index %>">
+                                    <label class="custom-file-label"
+                                           for="songFullVer<%= index %>"><%= val.FullVerFile %></label>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <audio controls>
+                                    <source src="/admin/song-file/<%= val.FullVerFile %>" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+
+                            <div class="statusDiv text-center">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <div class="text-center mt-3">
+            <button class="btn btn-success" onclick="appendSongForm()">Add other songs</button>
+        </div>
+
+    </div>
+</div>
+<!-- /.container-fluid -->
+<script>
+    function ajaxDelSong(songId) {
+        $.ajax({
+            type: "DELETE",
+            url: '/admin/song?songId=' + songId,
+            success: function (data) {
+                window.location.reload();
+            }
+        });
+    }
+
+    function updateFileName(ele) {
+        $(ele).next('.custom-file-label').text($(ele)[0].files[0].name);
+    }
+
+    function submitSong(event, ele, url, method) {
+        event.preventDefault();
+        $(ele).find('button[type=submit]').attr('disabled', 'disabled');
+        // $(ele).find('.statusDiv').html('gsgrsgs');
+        var formData = new FormData(ele);
+        $.ajax({
+            type: method || "POST",
+            url: url || '/admin/add-song',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                $(ele).find('.statusDiv').html('OK!');
+            }
+        });
+    }
+
+    function appendSongForm() {
+        var songFormCount = $('.songForms').children().length;
+        var form =
+            '<div class="card mx-auto mb-3">\n' +
+            '    <div class="card-header">\n' +
+            '        <i class="fas fa-music"></i>' +
+            '        New Song \n' +
+            '    </div>\n' +
+            '    <div class="card-body">\n' +
+            '        <form action="/admin/add-song" method="post" enctype="multipart/form-data" onSubmit="submitSong(event, this)">\n' +
+            '            <input type="hidden" id="albumName" name="albumId" value="<%= albumId %>">\n' +
+            '            <div class="form-row mb-3">\n' +
+            '                <div class="col form-label-group">\n' +
+            `                    <input type="text" id="songName${songFormCount}" class="form-control" name="name" placeholder="Name"\n` +
+            '                           required>\n' +
+            `                    <label for="songName${songFormCount}">Name</label>\n` +
+            '                </div>\n' +
+            '\n' +
+            '                <div class="col form-label-group">\n' +
+            `                    <input type="number" id="songPrice${songFormCount}" class="form-control" name="price"\n` +
+            '                           placeholder="Price"\n' +
+            '                           required>\n' +
+            `                    <label for="songPrice${songFormCount}">$ Price</label>\n` +
+            '                </div>\n' +
+            '\n' +
+            '                <div class="col form-label-group">\n' +
+            `                    <input type="number" id="songQuantity${songFormCount}" class="form-control" name="quantity"\n` +
+            '                           placeholder="Quantity" required>\n' +
+            `                    <label for="songQuantity${songFormCount}">Quantity</label>\n` +
+            '                </div>\n' +
+            '            </div>\n' +
+            '\n' +
+            '            <div class="input-group mb-3">\n' +
+            '                <div class="input-group-prepend">\n' +
+            '                    <span class="input-group-text">Trial version (Song)</span>\n' +
+            '                </div>\n' +
+            '                <div class="custom-file">\n' +
+            '                    <input type="file" accept=".mp3" class="custom-file-input" name="songTrialVer"\n' +
+            `                           id="songTrialVer${songFormCount}" required onChange="updateFileName(this)">\n` +
+            `                    <label class="custom-file-label" for="songTrialVer${songFormCount}">Choose song file</label>\n` +
+            '                </div>\n' +
+            '            </div>\n' +
+            '\n' +
+            '            <div class="input-group mb-3">\n' +
+            '                <div class="input-group-prepend">\n' +
+            '                    <span class="input-group-text">Full version (Song)</span>\n' +
+            '                </div>\n' +
+            '                <div class="custom-file">\n' +
+            '                    <input type="file" accept=".mp3" class="custom-file-input" name="songFullVer"\n' +
+            `                           id="songFullVer${songFormCount}" required onChange="updateFileName(this)">\n` +
+            `                    <label class="custom-file-label" for="songFullVer${songFormCount}">Choose song file</label>\n` +
+            '                </div>\n' +
+            '            </div>\n' +
+            '\n' +
+            '            <div class="statusDiv text-center">\n' +
+            '                <button type="submit" class="btn btn-primary">Save</button>\n' +
+            '            </div>\n' +
+            '        </form>\n' +
+            '    </div>\n' +
+            '</div>'
+        $('.songForms').append(form);
+    }
+
+    $(document).ready(function () {
+        $('.custom-file-input').on('change', function () {
+            //replace the "Choose a file" label
+            $(this).next('.custom-file-label').text($(this)[0].files[0].name);
+        });
+
+        $('.submitSongForm').on('submit', function (e) {
+            e.preventDefault();
+            submitSong(e, this, '/admin/edit-song', 'PUT')
+        });
+    });
+</script>
